@@ -1,15 +1,7 @@
 -- BUY BUY
-DROP TABLE IF EXISTS items;
-DROP TABLE IF EXISTS orders;
-
-CREATE TABLE IF NOT EXISTS items (
-    name VARCHAR(255) NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 10
-);
-
-CREATE TABLE IF NOT EXISTS orders (
-    item_name VARCHAR(255) NOT NULL,
-    number INTEGER NOT NULL
-);
-
-INSERT INTO items (name) VALUES ("apple"), ("pineapple"), ("pear");
+CREATE TRIGGER DelQuantityConsult
+AFTER INSERT ON orders
+FOR EACH ROW
+	UPDATE items
+	SET quantity = quantity - NEW.number
+	WHERE NEW.item_name = name;
