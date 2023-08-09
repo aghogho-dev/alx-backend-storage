@@ -4,7 +4,12 @@
 
 def top_students(mongo_collection):
     """Top student"""
-    return mongo_collection.aggregrate(
-            [{'$project': {'name': '$name', 'averageScore': {'$avg': '$topics.score'}},
-                {'$sort': {'averageScore': - 1}}
-            ])
+    return  mongo_collection.aggregate([
+        {
+            "$project": {
+                "name": "$name",
+                "averageScore": {"$avg": "$topics.score"}
+            }
+        },
+        {"$sort": {"averageScore": -1}}
+    ])
